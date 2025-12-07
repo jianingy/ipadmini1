@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip Clock</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #1a1a1a;
+            display: -webkit-box;
+            -webkit-box-pack: center;
+            -webkit-box-align: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+
+        .clock-container {
+            display: -webkit-box;
+            -webkit-box-orient: horizontal;
+            gap: 20px;
+        }
+
+        .time-unit {
+            display: -webkit-box;
+            -webkit-box-orient: horizontal;
+            gap: 10px;
+        }
+
+        .flip-card {
+            position: relative;
+            width: 80px;
+            height: 120px;
+            perspective: 500px;
+            -webkit-perspective: 500px;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .flip-card-top,
+        .flip-card-bottom {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            background: #333;
+            border: 2px solid #000;
+            overflow: hidden;
+            -webkit-border-radius: 4px;
+        }
+
+        .flip-card-top {
+            top: 0;
+            -webkit-border-bottom-left-radius: 0;
+            -webkit-border-bottom-right-radius: 0;
+        }
+
+        .flip-card-bottom {
+            bottom: 0;
+            -webkit-border-top-left-radius: 0;
+            -webkit-border-top-right-radius: 0;
+        }
+
+        .flip-card-number {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 72px;
+            font-weight: bold;
+            color: #fff;
+            line-height: 120px;
+        }
+
+        .flip-card-top .flip-card-number {
+            top: 0;
+        }
+
+        .flip-card-bottom .flip-card-number {
+            top: -60px;
+        }
+
+        .flip-card-flip {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            top: 0;
+            background: #333;
+            border: 2px solid #000;
+            overflow: hidden;
+            -webkit-transform-origin: bottom;
+            -webkit-border-radius: 4px;
+            -webkit-border-bottom-left-radius: 0;
+            -webkit-border-bottom-right-radius: 0;
+            -webkit-transform: rotateX(0deg);
+            -webkit-backface-visibility: hidden;
+            z-index: 2;
+        }
+
+        .flip-card-flip.flipping {
+            -webkit-animation: flip 0.6s ease-in-out;
+        }
+
+        @-webkit-keyframes flip {
+            0% {
+                -webkit-transform: rotateX(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotateX(-180deg);
+            }
+        }
+
+        .flip-card-flip .flip-card-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 72px;
+            font-weight: bold;
+            color: #fff;
+            line-height: 120px;
+        }
+
+        .separator {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-box-pack: center;
+            font-size: 60px;
+            color: #fff;
+            font-weight: bold;
+            padding: 0 10px;
+        }
+
+        .label {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="clock-container">
+        <div>
+            <div class="time-unit">
+                <div class="flip-card" id="hour-tens">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-top">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                        <div class="flip-card-bottom">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                        <div class="flip-card-flip">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" id="hour-ones">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-top">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                        <div class="flip-card-bottom">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                        <div class="flip-card-flip">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="label">Hours</div>
+        </div>
+
+        <div class="separator">:</div>
+
+        <div>
+            <div class="time-unit">
+                <div class="flip-card" id="minute-tens">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-top">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                        <div class="flip-card-bottom">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                        <div class="flip-card-flip">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" id="minute-ones">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-top">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                        <div class="flip-card-bottom">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                        <div class="flip-card-flip">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="label">Minutes</div>
+        </div>
+
+        <div class="separator">:</div>
+
+        <div>
+            <div class="time-unit">
+                <div class="flip-card" id="second-tens">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-top">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                        <div class="flip-card-bottom">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                        <div class="flip-card-flip">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card" id="second-ones">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-top">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                        <div class="flip-card-bottom">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                        <div class="flip-card-flip">
+                            <div class="flip-card-number">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="label">Seconds</div>
+        </div>
+    </div>
+
+    <script>
+        function pad(num) {
+            return num < 10 ? '0' + num : num.toString();
+        }
+
+        function updateFlipCard(cardId, newValue) {
+            var card = document.getElementById(cardId);
+            var topNumber = card.querySelector('.flip-card-top .flip-card-number');
+            var bottomNumber = card.querySelector('.flip-card-bottom .flip-card-number');
+            var flipNumber = card.querySelector('.flip-card-flip .flip-card-number');
+            var flipCard = card.querySelector('.flip-card-flip');
+
+            var currentValue = topNumber.textContent;
+
+            if (currentValue !== newValue) {
+                // Set flip card to current value
+                flipNumber.textContent = currentValue;
+
+                // Remove previous animation
+                flipCard.className = 'flip-card-flip';
+
+                // Force reflow
+                void flipCard.offsetWidth;
+
+                // Start animation
+                flipCard.className = 'flip-card-flip flipping';
+
+                // Update bottom half immediately
+                bottomNumber.textContent = newValue;
+
+                // Update top half after animation
+                setTimeout(function () {
+                    topNumber.textContent = newValue;
+                    flipCard.className = 'flip-card-flip';
+                    flipNumber.textContent = newValue;
+                }, 600);
+            }
+        }
+
+        function updateClock() {
+            var now = new Date();
+            var hours = pad(now.getHours());
+            var minutes = pad(now.getMinutes());
+            var seconds = pad(now.getSeconds());
+
+            updateFlipCard('hour-tens', hours.charAt(0));
+            updateFlipCard('hour-ones', hours.charAt(1));
+            updateFlipCard('minute-tens', minutes.charAt(0));
+            updateFlipCard('minute-ones', minutes.charAt(1));
+            updateFlipCard('second-tens', seconds.charAt(0));
+            updateFlipCard('second-ones', seconds.charAt(1));
+        }
+
+        // Initialize clock
+        updateClock();
+
+        // Update every second
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+
+</html>
