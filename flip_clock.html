@@ -94,15 +94,9 @@
             width: 100%;
             height: 50%;
             top: 0;
-            background: #333;
-            border: 2px solid #000;
-            overflow: hidden;
             -webkit-transform-origin: bottom;
-            -webkit-border-radius: 4px;
-            -webkit-border-bottom-left-radius: 0;
-            -webkit-border-bottom-right-radius: 0;
+            -webkit-transform-style: preserve-3d;
             -webkit-transform: rotateX(0deg);
-            -webkit-backface-visibility: hidden;
             z-index: 2;
         }
 
@@ -120,16 +114,38 @@
             }
         }
 
-        .flip-card-flip .flip-card-number {
+        .flip-face-front,
+        .flip-face-back {
             position: absolute;
-            left: 0;
-            top: 0;
             width: 100%;
-            text-align: center;
-            font-size: 72px;
-            font-weight: bold;
-            color: #fff;
-            line-height: 120px;
+            height: 100%;
+            background: #333;
+            border: 2px solid #000;
+            overflow: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .flip-face-front {
+            -webkit-border-radius: 4px;
+            -webkit-border-bottom-left-radius: 0;
+            -webkit-border-bottom-right-radius: 0;
+            z-index: 2;
+        }
+
+        .flip-face-back {
+            -webkit-transform: rotateX(-180deg);
+            -webkit-border-radius: 4px;
+            -webkit-border-top-left-radius: 0;
+            -webkit-border-top-right-radius: 0;
+            z-index: 1;
+        }
+
+        .flip-face-front .flip-card-number {
+            top: 0;
+        }
+
+        .flip-face-back .flip-card-number {
+            top: -60px;
         }
 
         .separator {
@@ -165,7 +181,12 @@
                             <div class="flip-card-number">0</div>
                         </div>
                         <div class="flip-card-flip">
-                            <div class="flip-card-number">0</div>
+                            <div class="flip-face-front">
+                                <div class="flip-card-number">0</div>
+                            </div>
+                            <div class="flip-face-back">
+                                <div class="flip-card-number">0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -178,7 +199,12 @@
                             <div class="flip-card-number">0</div>
                         </div>
                         <div class="flip-card-flip">
-                            <div class="flip-card-number">0</div>
+                            <div class="flip-face-front">
+                                <div class="flip-card-number">0</div>
+                            </div>
+                            <div class="flip-face-back">
+                                <div class="flip-card-number">0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -199,7 +225,12 @@
                             <div class="flip-card-number">0</div>
                         </div>
                         <div class="flip-card-flip">
-                            <div class="flip-card-number">0</div>
+                            <div class="flip-face-front">
+                                <div class="flip-card-number">0</div>
+                            </div>
+                            <div class="flip-face-back">
+                                <div class="flip-card-number">0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -212,7 +243,12 @@
                             <div class="flip-card-number">0</div>
                         </div>
                         <div class="flip-card-flip">
-                            <div class="flip-card-number">0</div>
+                            <div class="flip-face-front">
+                                <div class="flip-card-number">0</div>
+                            </div>
+                            <div class="flip-face-back">
+                                <div class="flip-card-number">0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -233,7 +269,12 @@
                             <div class="flip-card-number">0</div>
                         </div>
                         <div class="flip-card-flip">
-                            <div class="flip-card-number">0</div>
+                            <div class="flip-face-front">
+                                <div class="flip-card-number">0</div>
+                            </div>
+                            <div class="flip-face-back">
+                                <div class="flip-card-number">0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -246,7 +287,12 @@
                             <div class="flip-card-number">0</div>
                         </div>
                         <div class="flip-card-flip">
-                            <div class="flip-card-number">0</div>
+                            <div class="flip-face-front">
+                                <div class="flip-card-number">0</div>
+                            </div>
+                            <div class="flip-face-back">
+                                <div class="flip-card-number">0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -264,14 +310,26 @@
             var card = document.getElementById(cardId);
             var topNumber = card.querySelector('.flip-card-top .flip-card-number');
             var bottomNumber = card.querySelector('.flip-card-bottom .flip-card-number');
-            var flipNumber = card.querySelector('.flip-card-flip .flip-card-number');
+            var flipFrontNumber = card.querySelector('.flip-face-front .flip-card-number');
+            var flipBackNumber = card.querySelector('.flip-face-back .flip-card-number');
             var flipCard = card.querySelector('.flip-card-flip');
 
             var currentValue = topNumber.textContent;
 
             if (currentValue !== newValue) {
-                // Set flip card to current value
-                flipNumber.textContent = currentValue;
+                // 1. Prepare the static top (Underneath) to show the NEW value
+                // This will be revealed as the flap flips down
+                topNumber.textContent = newValue;
+
+                // 2. Prepare the static bottom (Underneath) to show the CURRENT value
+                // This will be covered when the flap finishes flipping
+                bottomNumber.textContent = currentValue;
+
+                // 3. Prepare the Flap
+                // Front face: Shows CURRENT value (Top half)
+                flipFrontNumber.textContent = currentValue;
+                // Back face: Shows NEW value (Bottom half)
+                flipBackNumber.textContent = newValue;
 
                 // Remove previous animation
                 flipCard.className = 'flip-card-flip';
@@ -282,14 +340,16 @@
                 // Start animation
                 flipCard.className = 'flip-card-flip flipping';
 
-                // Update bottom half immediately
-                bottomNumber.textContent = newValue;
-
-                // Update top half after animation
+                // After animation completes
                 setTimeout(function () {
-                    topNumber.textContent = newValue;
+                    // The flap has landed. It is now covering the bottom.
+                    // We update the static bottom to the new value.
+                    bottomNumber.textContent = newValue;
+
+                    // Reset the flap
                     flipCard.className = 'flip-card-flip';
-                    flipNumber.textContent = newValue;
+                    flipFrontNumber.textContent = newValue;
+                    flipBackNumber.textContent = newValue;
                 }, 600);
             }
         }
